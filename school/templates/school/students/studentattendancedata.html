@@ -1,0 +1,85 @@
+{% extends 'students/studentbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 75%;
+        top: 200px;
+        left: 45%;
+        transform: translate(15%, 25px);
+        opacity: 85%;
+    }
+    .label {
+        font-size: 18px;
+    }
+    .info {
+        height: 225px;
+    }
+    .btn.btn-outline-primary.save{
+        width: 250px;
+        height: 25x;
+    }
+        .col-lg-3.attendance_div_red {
+            padding: 10px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            background: #dc3545;
+            text-align: center;
+            color: #fff;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            opacity: 0.7;
+
+        }
+
+        .col-lg-3.attendance_div_green {
+            padding: 10px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            background: #0d6efd;
+            text-align: center;
+            color: #fff;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+    </style>
+    {% endblock custom_css %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Obecność</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {% if areports %}
+                                {% for areport in areports %}
+                                {% if areport.status == True %}
+                                <div class="col-lg-3 attendance_div_green mx-2">
+                                    <b>Data: {{ areport.attendancetid.attendancedate|date:'Y-m-d' }}</b>
+                                    <br>
+                                    <b>Status: Nieobecny</b>
+                                </div>
+                                {% else %}
+                                <div class="col-lg-3 attendance_div_red mx-2">
+                                    <b>Date : {{ areport.attendancetid.attendancedate }}</b>
+                                    <br>
+                                    <b>Status: Obecny</b>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% else %}
+                                <div class="alert alert-danger text-center">Brak przypisanej obecności</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+{% endblock %}

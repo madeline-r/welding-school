@@ -1,0 +1,199 @@
+{% extends 'staff/staffbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 75%;
+        top: 200px;
+        left: 45%;
+        transform: translate(15%, 25px);
+        opacity: 85%;
+    }
+    .label {
+        font-size: 18px;
+    }
+    .info {
+        height: 225px;
+    }
+    .btn.btn-outline-primary.save{
+        width: 250px;
+        height: 25x;
+    }
+</style>
+{% endblock custom_css %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-lg-10 text-jusify-left ms-2 my-2">
+                                    <h3 class="card-title">Obecność</h3>
+                                </div>
+                                <div class="col-lg-1 text-jusify-right my-2">
+                                    <a href="{% url 'staffaddattendance'  %}" class="button btn btn-outline-primary" >Dodaj</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="label mb-2 mt-1 ms-2">Temat</label>
+                                <select class="form-control" name="subject" id="subject">
+                                    {% for subject in subjects %}
+                                    <option value="{{ subject.id }}">{{ subject.subjectname }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="label mb-2 mt-1 ms-2">Czas szkolenia</label>
+                                <select class="form-control" name="coursetimeid" id="coursetimeid">
+                                    {% for time in coursetimeid %}
+                                    <option value="{{ time.id }}">{{ time.startcourse|date:'Y-m-d' }} - {{ time.endcourse|date:'Y-m-d' }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mt-3">
+                                    <button type="button" class="btn btn-outline-primary save my-2" id="fetchattendancedates">Pobierz daty</button>
+                            </div>
+                            <div class="form-group" id="attendanceblock" style="display:none;">
+                                <label class="label mb-2 mt-1 ms-2">Data</label>
+                                <select class="form-control" name="attendancedate" id="attendancedate">
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="alert alert-danger" id="errorattendance" style="display:none;">
+
+                                </div>
+                            </div>
+                            <div class="form-group mt-3" id="fetchattendancestudentblock" style="display:none;">
+                                    <button type="button" class="btn btn-outline-primary save my-2" id="fetchattendancestudents">Pobierz obecność</button>
+                            </div>
+                        </div>
+                        <div id="studentdata" class="card-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block custom_js %}
+    <script>
+        $(document).ready(function () {
+            $("#fetchattendancedates").click(function(){
+                var subject=$("#subject").val();
+                var time=$("#coursetimeid").val();
+                $.ajax({
+                        url: '{% url "fetchattendancedates" %}',
+                        type: 'POST',
+                        data: {subject:subject,coursetimeid:time},
+                        })
+                        .done(function(response){
+                            var json_data=JSON.parse(response);
+                            if(json_data.length>0)
+                            {
+                                var html_data="";
+                                for(key in json_data)
+                                {
+                                    html_data+="<option value="+json_data[key]["id"]+">"+json_data[key]["attendancedate"]+"</option>"
+                                }
+                                $("#errorattendance").html("");
+                                $("#errorattendance").hide();
+                                $("#attendanceblock").show();
+                                $("#fetchattendancestudentblock").show();
+                                $("#attendancedate").html(html_data);
+                            }
+                            else{
+                                $("#errorattendance").html("No data");
+                                $("#errorattendance").show();
+                                $("#attendanceblock").hide();
+                                $("#fetchattendancestudentblock").hide();
+                                $("#attendancedate").html();
+
+                            }
+                        })
+                        .fail(function () {
+                            alert("Błąd")
+                            $("#errorattendance").html("");
+                            $("#attendanceblock").hide();
+                            $("#fetchattendancestudentblock").hide();
+                        });
+            })
+            $("#fetchattendancestudents").click(function () {
+                var attendancedate = $("#attendancedate").val()
+                $.ajax({
+                    url: '{% url "fetchattendancestudents" %}',
+                    type: 'POST',
+                    data: { attendancedate: attendancedate},
+                })
+                    .done(function (response) {
+                        var json_data=JSON.parse(response);
+                        var div_data="<div class='form-group'><label class='label mb-2 mt-1 ms-2'>Lista obecności: </label></div><div class='form-group'><div class='row'>";
+                        for (key in json_data){
+                            div_data+="<div class='col-lg-3'> <div class='form-check'> <input type='checkbox'";
+                            if(json_data[key]['status'])
+                            {
+                                div_data+="checked='checked'";
+                            }
+                            else{
+                                div_data+="";
+                            }
+                            div_data+="name='studentdata[]' value='"+json_data[key]['id']+"'><br><label class='form-check-label'>"+json_data[key]['name']+"</label>";
+                            if(json_data[key]['status'])
+                            {
+                                div_data+="";
+                            }
+                            else{
+                                div_data+="";
+                            }
+                            div_data+="</div></div>";
+                        }
+                        div_data+="</div></div>";
+                        div_data+="<div class='form-group'>";
+                        div_data+="<center><button id='saveattendance' class='btn btn-outline-primary px-5 m-2 my-2' type='button'>Zapisz</button></center>";
+                        div_data+="</div>";
+                        $("#studentdata").html(div_data);
+                    })
+                    .fail(function () {
+                        alert("Błąd w pobieraniu listy")
+                    })
+
+                    $(document).on("click","#saveattendance",function(){
+                        $(this).attr("disabled","disabled")
+                        $(this).text("Saving")
+                        var studentdata=$("input[name='studentdata[]']").map(function(){
+                            if($(this).is(":checked")){
+                            return {"id":$(this).val(),"status":1};
+                            }
+                            else{
+                                return {"id":$(this).val(),"status":0};
+                            }
+                        }).get()
+                        var attendancedate=$("#attendancedate").val();
+                        studentdata=JSON.stringify(studentdata)
+
+                        $.ajax({
+                        url: '{% url "staffeditattendance" %}',
+                        type: 'POST',
+                        data: {studentids:studentdata, attendancedate:attendancedate},
+                        })
+                            .done(function (response) {
+                                if(response=="OK"){
+                                    alert("Zaktualizowano obecność")
+                                }
+                                else{
+                                    alert("Błąd aktualizacji")
+                                }
+                                location.reload()
+                        })
+                        .fail(function () {
+                            alert("Error")
+                        })
+                    })
+            })
+
+        })
+    </script>
+    {% endblock custom_js %}
+    {% endblock %}

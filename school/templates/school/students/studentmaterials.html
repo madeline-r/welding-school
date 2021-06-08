@@ -1,0 +1,50 @@
+{% extends 'students/studentbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 75%;
+        top: 200px;
+        left: 45%;
+        transform: translate(15%, 25px);
+        opacity: 85%;
+    }
+    .card-header{
+        font-size: 20px;
+    }
+</style>
+{% endblock custom_css %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-10 text-jusify-left ms-2 my-2">
+                                <h3 class="card-title">Materiały naukowe</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        {% for materials in materials %}
+                            <div class="card">
+                                <div class="card-header mx-2">
+                                    {{ materials.subjectid.subjectname }}
+                                </div>
+                                <div class="card-body">
+                                        <h3 class="card-title mx-2 my-2">{{ materials.title}}</h3>
+                                        <a href="{% url 'studentmaterialcontent' materials.id %}" class="button btn btn-outline-primary my-3">Szczegóły</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% block custom_js %}
+<script>
+</script>
+{% endblock custom_js %}
+{% endblock %}

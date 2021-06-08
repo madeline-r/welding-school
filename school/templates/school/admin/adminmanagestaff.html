@@ -1,0 +1,97 @@
+{% extends 'admin/adminbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 75%;
+        top: 200px;
+        left: 45%;
+        transform: translate(15%, 25px);
+        opacity: 85%;
+    }
+    .button{
+        width: 100px;
+        height: 25x;
+    }
+    .search{
+        width: 97%;
+        height: 40px;
+        border: none; 
+        border:solid 1px #000000;
+        border-radius: 5px;
+    }
+    .mtable{
+        font-size: 18px;
+    }
+</style>
+{% endblock custom_css %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-10 text-jusify-left ms-2 my-2">
+                                <h3 class="card-title">Pracownicy</h3>
+                            </div>
+                            <div class="col-lg-1 text-jusify-right my-2">
+                                <a href="{% url 'adminaddstaff'  %}" class="button btn btn-outline-primary" >Dodaj</a>
+                            </div>
+                        </div>
+                        <input type="text" class="search ms-2 my-2" id="search" onkeyup="mySearch()" placeholder="Szukaj pracownika" title="name">
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap" id="myTable">
+                            <thead class="mtable">
+                                <tr style="text-align:center">
+                                    <th>Nazwisko</th>
+                                    <th>Imie</th>
+                                    <th>Nazwa</th>
+                                    <th>Email</th>
+                                    <th>Edycja</th>
+                                    <th>Usuń</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for staff in staff %}
+                                <tr style="text-align:center">
+                                    <td>{{ staff.admin.last_name }}</td>
+                                    <td>{{ staff.admin.first_name }}</td>
+                                    <td>{{ staff.admin.username }}</td>
+                                    <td>{{ staff.admin.email }}</td>
+                                    <td><a href="/admineditstaff/{{ staff.admin.id }}" class="button btn btn-outline-primary">Edytuj</a></td>
+                                    <td><a href="/admindeletestaff/{{ staff.admin.id }}" class="button btn btn-outline-danger">Usuń</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% block custom_js %}
+<script>
+    function mySearch() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+{% endblock custom_js %}
+{% endblock %}

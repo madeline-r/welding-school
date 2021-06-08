@@ -1,0 +1,117 @@
+{% extends 'staff/staffbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 75%;
+        top: 200px;
+        left: 45%;
+        transform: translate(15%, 25px);
+        opacity: 85%;
+    }
+    .label {
+        font-size: 18px;
+    }
+    .info {
+        height: 225px;
+    }
+    .btn.btn-outline-primary.save{
+        width: 250px;
+        height: 25x;
+    }
+</style>
+{% endblock custom_css %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="{% url 'staffsaveresults' %}" method="post">
+                        {% csrf_token %}
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title my-2 ms-2">Dodaj ocenę</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="label mb-2 mt-1 ms-2">Temat</label>
+                                <select class="form-control" name="subject" id="subject">
+                                    {% for subject in subjects %}
+                                    <option value="{{ subject.id }}">{{ subject.subjectname }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="label mb-2 mt-1 ms-2">Czas kursu</label>
+                                <select class="form-control" name="time" id="time">
+                                    {% for time in coursetime %}
+                                    <option value="{{ time.id }}">{{ time.startcourse|date:'Y-m-d' }} - {{ time.endcourse|date:'Y-m-d' }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                {% if messages %}
+                                {% for message in messages %}
+                                {% if message.tags == 'error' %}
+                                <div class="alert alert-danger" style="margin-top:10px">Błąd zapisu oceny</div>
+                                {% endif %}
+                                {% if message.tags == 'success' %}
+                                <div class="alert alert-success" style="margin-top:10px">Poprawnie zapisano ocenę</div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-outline-primary save my-2" id="fetchstudent">Pobierz listę</button>
+                        </div>
+                        <div id="studentdata" class="card-footer">
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block custom_js %}
+    <script>
+        $(document).ready(function () {
+            $("#fetchstudent").click(function () {
+                var subject = $("#subject").val()
+                var time = $("#time").val()
+
+                $.ajax({
+                    url: '{% url "fetchstudents" %}',
+                    type: 'POST',
+                    data: { subject: subject, time: time },
+                })
+                    .done(function (response) {
+                        var json_data=JSON.parse(response);
+                        console.log(json_data)
+                        var div_data="<div class='form-group'><label class='label mb-2 mt-1 ms-2'>Uczniowie </label><select class='studentlist form-control' name='studentlist'>";           
+                        for (key in json_data)
+                        {
+                            div_data+="<option value='"+json_data[key]['id']+"'> "+json_data[key]['name']+"</option>";
+                        }
+                        div_data+="</select>";
+                        div_data+="</div>";
+                        div_data+="<div class='form-group'><div class='row'>"
+                        div_data+="<div class='col-lg-6'>";
+                        div_data+="<label class='label mb-2 mt-1 ms-2'>Ocena: </label><input type='text' name='materialresult' class='form-control'>";
+                        div_data+="</div>";
+                        div_data+="<div class='col-lg-6'>";
+                        div_data+="<label class='label mb-2 mt-1 ms-2'>Opis: </label><input type='text' name='description' class='form-control'>";
+                        div_data+="</div>";
+                        div_data+="</div></div>";
+                        div_data+="<div class='form-group'>";
+                        div_data+="<center><button id='saveattendance' class='btn btn-outline-primary px-5 m-2 my-4' type='submit'>Zapisz</button></center>";
+                        div_data+="</div>";
+                        $("#studentdata").html(div_data);
+                    })
+                    .fail(function () {
+                        alert("Błąd w pobieraniu listy")
+                    })
+            })
+        })
+    </script>
+    {% endblock custom_js %}
+    {% endblock %}

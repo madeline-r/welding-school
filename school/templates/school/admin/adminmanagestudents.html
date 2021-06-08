@@ -1,0 +1,76 @@
+{% extends 'admin/adminbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 80%;
+        top: 200px;
+        left: 45%;
+        transform: translate(12%, 25px);
+        opacity: 85%;
+    }
+    .button{
+        width: 100px;
+        height: 25x;
+    }
+    .search{
+        width: 97%;
+        height: 40px;
+        border: none; 
+        border:solid 1px #000000;
+        border-radius: 5px;
+    }
+    .mtable{
+        font-size: 18px;
+    }
+</style>
+{% endblock custom_css %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-10 text-jusify-left ms-2 my-2">
+                                <h3 class="card-title">Uczniowie</h3>
+                            </div>
+                            <div class="col-lg-1 text-jusify-right my-2">
+                                <a href="{% url 'adminaddstudent'  %}" class="button btn btn-outline-primary">Dodaj</a>
+                            </div>
+                        </div>
+                        <input type="text" class="search ms-2 my-2" id="search" onkeyup="mySearch()" placeholder="Szukaj ucznia" title="name">
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap" id="myTable">
+                            <thead class="mtable">
+                                <tr style="text-align:center">
+                                    <th>Imie</th>
+                                    <th>Nazwisko</th>
+                                    <th>Nazwa</th>
+                                    <th>Email</th>
+                                    <th>Kurs</th>
+                                    <th>Edycja</th>
+                                    <th>Usuń</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr style="text-align:center">
+                                    <td>{{ student.admin.first_name }}</td>
+                                    <td>{{ student.admin.last_name }}</td>
+                                    <td>{{ student.admin.username }}</td>
+                                    <td>{{ student.admin.email }}</td>
+                                    <td>{{ student.courseid.coursename }}</td>
+                                    <td><a href="{% url 'admineditstudent' student_id=student.admin.id %}" class="button btn btn-outline-primary">Edytuj</a></td>
+                                    <td><a href="/admindeletestudent/{{ student.admin.id }}" class="button btn btn-outline-danger">Usuń</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'staff/staffbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 75%;
+        top: 200px;
+        left: 45%;
+        transform: translate(15%, 25px);
+        opacity: 85%;
+    }
+    .label {
+        font-size: 18px;
+    }
+    .info {
+        height: 225px;
+    }
+    .btn.btn-outline-primary.save{
+        width: 250px;
+        height: 25x;
+    }
+</style>
+{% endblock custom_css %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title my-2 ms-2">Sprawdź obecność</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="label mb-2 mt-1 ms-2">Temat</label>
+                                <select class="form-control" name="subject" id="subject">
+                                    {% for subject in subjects %}
+                                    <option value="{{ subject.id }}">{{ subject.subjectname }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="label mb-2 mt-1 ms-2">Data kursu</label>
+                                <select class="form-control" name="time" id="time">
+                                    {% for time in coursetime %}
+                                    <option value="{{ time.id }}">{{ time.startcourse|date:'Y-m-d' }} - {{ time.endcourse|date:'Y-m-d' }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                {% if messages %}
+                                {% for message in messages %}
+                                {% if message.tags == 'error' %}
+                                <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
+                                {% endif %}
+                                {% if message.tags == 'success' %}
+                                <div class="alert alert-success" style="margin-top:10px">{{ message }}</div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                                <button type="submit" class="btn btn-outline-primary save my-2" id="fetchstudent">Pobierz listę</button>
+                        </div>
+                        <div id="studentdata" class="card-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block custom_js %}
+    <script>
+        $(document).ready(function () {
+            $("#fetchstudent").click(function () {
+                var subject = $("#subject").val()
+                var time = $("#time").val()
+
+                $.ajax({
+                    url: '{% url "fetchstudents" %}',
+                    type: 'POST',
+                    data: { subject: subject, time: time },
+                })
+                    .done(function (response) {
+                        var json_data=JSON.parse(response);
+                        console.log(json_data)
+                        var div_data="<div class='form-group'><label class='label mb-2 mt-1 ms-2'>Data: </label><input type='date' name='attendancedate' id='attendancedate' class='form-control'></div><div class='form-group'><div class='row'>";
+                        for (key in json_data){
+                            div_data+="<div class='col-lg-2'><div class='form-check my-2'><input type='checkbox' checked='checked' name='studentdata[]' value='"+json_data[key]['id']+"'><label class='form-check-label content-justify-center mb-2'>"+json_data[key]['name']+"</label></div></div>";
+                        }
+                        div_data+="</div></div>";
+                        div_data+="<div class='form-group'>";
+                        div_data+="<center><button id='saveattendance' class='btn btn-outline-primary px-5 m-2 my-2' type='button'>Zapisz</button></center>";
+                        div_data+="</div>";
+                        $("#studentdata").html(div_data);
+                    })
+                    .fail(function () {
+                        alert("Błąd w pobieraniu listy")
+                    })
+                    $(document).on("click","#saveattendance",function(){
+                        $(this).attr("disabled","disabled")
+                        $(this).text("Zapisywanie")
+                        var studentdata=$("input[name='studentdata[]']").map(function(){
+                            if($(this).is(":checked")){
+                            return {"id":$(this).val(),"status":1};
+                            }
+                            else{
+                                return {"id":$(this).val(),"status":0};
+                            }
+                        }).get()
+                        var attendancedate=$("#attendancedate").val();
+                        var subject_id=$("#subject").val();
+                        var coursetime_id=$("#time").val();
+                        console.log(studentdata)
+                        studentdata=JSON.stringify(studentdata)
+
+                        $.ajax({
+                        url: '{% url "staffsaveattendance" %}',
+                        type: 'POST',
+                        data: {studentids:studentdata, attendancedate:attendancedate, subject_id:subject_id, coursetime_id:coursetime_id},
+                        })
+                            .done(function (response) {
+                                if(response=="OK"){
+                                    alert("Obecność zapisana")
+                                }
+                                else{
+                                    alert("Błąd zapisu")
+                                }
+                                location.reload()
+                        })
+                        .fail(function () {
+                            alert("Błąd zapisu")
+                        })
+                    })
+            })
+        })
+    </script>
+    {% endblock custom_js %}
+    {% endblock %}

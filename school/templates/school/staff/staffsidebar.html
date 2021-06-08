@@ -1,0 +1,139 @@
+{% block custom_css %}
+<style>
+        .side-bar {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            width: 225px;
+            height: 100%;
+            position: fixed;
+            top: 5;
+            left: 0;
+            overflow-y: auto;
+            transition: 0.5s ease;
+            transition-property: left;
+        }
+        .side-bar.close {
+            left: -100%;
+        }
+        .open {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            left: 15px;
+            margin: 20px;
+            cursor: pointer;
+        }
+        .close {
+            position: absolute;
+            color: black;
+            font-size: 20px;
+            right: 0px;
+            margin: 15px;
+            cursor: pointer;
+        }
+        .menu {
+            width: 100%;
+            margin-top: 50px;
+        }
+        .item {
+            position: relative;
+            cursor: pointer;
+        }
+        .sub-btn {
+            color: black;
+            font-size: 17px;
+            text-decoration: none;
+            display: block;
+            padding: 5px 20px;
+            line-height: 60px;
+        }
+        .sub-btn:hover {
+            color: black;
+            background: #1768be;
+            transition: 0.2s ease;
+        }
+        i {
+            margin-right: 10px;
+        }
+        .dropdown {
+            position: absolute;
+            right: 0;
+            margin: 25px;
+            transition: 0.5s ease;
+        }
+        .sub-menu {
+            display: none;
+        }
+        .sub-item {
+            color: black;
+            font-size: 15px;
+            text-decoration: none;
+            display: block;
+            padding: 1px 40px;
+            line-height: 60px;
+        }
+        .sub-item:hover {
+            color: black;
+            background: #1768be;
+            transition: 0.2s ease;
+        }
+        .rotate {
+            transform: rotate(90deg);
+        }
+</style>
+{% endblock custom_css %}
+<div class="open">
+    <i class="fas fa-ellipsis-v"></i>
+</div>
+<div class="side-bar">
+    <div class="close">
+        <i class="fas fa-times"></i>
+    </div>
+    <div class="menu">
+        <div class="item">
+            <a class="sub-btn"><i class="far fa-calendar-check"></i>Obecność<i class="fas fa-angle-right dropdown"></i></a>
+            <div class="sub-menu">
+                {% url 'staffmanageattendance' as staffmanageattendance %}
+                <a href="{{ staffmanageattendance }}" class="sub-item">Zarządzaj</a>
+                {% url 'staffaddattendance' as staffaddattendance %}
+                <a href="{{ staffaddattendance }}" class="sub-item">Dodaj</a>
+            </div>
+        </div>
+        <div class="item">
+            <a class="sub-btn"><i class="fas fa-graduation-cap"></i>Oceny<i class="fas fa-angle-right dropdown"></i></a>
+            <div class="sub-menu">
+                {% url 'staffmanageresults' as staffmanageresults %}
+                <a href="{{ staffmanageresults }}" class="sub-item">Zarządzaj</a>
+                {% url 'staffaddresults' as staffaddresults %}
+                <a href="{{ staffaddresults }}" class="sub-item">Dodaj</a>
+            </div>
+        </div>
+        <div class="item">
+            <a class="sub-btn"><i class="fas fa-book-open"></i></i>Materiały<i class="fas fa-angle-right dropdown"></i></a>
+            <div class="sub-menu">
+                <!-- {% url 'staffmanageresults' as staffmanageresults %}
+                <a href="{{ staffmanageresults }}" class="sub-item">Zarządzaj</a> -->
+                {% url 'staffaddmaterials' as staffaddmaterials %}
+                <a href="{{ staffaddmaterials }}" class="sub-item">Dodaj</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% block custom_js %}
+<script>
+    $(document).ready(function(){
+        $('.sub-btn').click(function(){
+            $(this).next('.sub-menu').slideToggle();
+            $(this).find('.dropdown').toggleClass('rotate');
+        })
+    $('.open').click(function(){
+        $('.side-bar').removeClass('close');
+        $('.open').css('visibility','hidden');
+    })
+    $('.close').click(function(){
+        $('.side-bar').addClass('close');
+        $('.open').css('visibility','visible');
+    })
+    })
+</script>
+{% endblock custom_js %}

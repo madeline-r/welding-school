@@ -1,0 +1,67 @@
+{% block custom_css %}
+<style>
+        .navbar.navbar-expand-lg.navbar-dark {
+            background: #1768be;
+        }
+</style>
+{% endblock custom_css %}
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item me-5">
+                    {% url 'adminhome' as adminhome %}
+                    <a class="nav-link active" aria-current="page" href="{{ adminhome }}">Szkoła Spawalnicza</a>
+                </li>
+                <li class="nav-item me-3">
+                    {% url 'adminmanagestaff' as adminmanagestaff %}
+                    <a class="nav-link" href="{{ adminmanagestaff }}">
+                        <i class="fas fa-user-friends me-1"></i>Pracownicy</a>
+                </li>
+                <li class="nav-item me-3">
+                    {% url 'adminmanagestudents' as adminmanagestudents %}
+                    <a class="nav-link" href="{{ adminmanagestudents }}">
+                        <i class="fas fa-users me-1"></i>Uczniowie</a>
+                </li>
+                <li class="nav-item me-3">
+                    {% url 'adminmanagecourses' as adminmanagecourses %}
+                    <a class="nav-link" href="{{ adminmanagecourses }}">
+                        <i class="fas fa-book me-1"></i>Kursy</a>
+                </li>
+                <li class="nav-item me-3">
+                    {% url 'adminmanagesubjects' as adminmanagesubjects %}
+                    <a class="nav-link" href="{{ adminmanagesubjects }}">
+                        <i class="fas fa-book-open me-1"></i>Tematy</a>
+                </li>
+                <li class="nav-item me-3">
+                    {% url 'adminmanagetime' as adminmanagetime %}
+                    <a class="nav-link" href="{{ adminmanagetime }}">
+                        <i class="far fa-calendar-alt me-1"></i>Terminarz</a>
+                </li>
+                <li class="nav-item me-3">
+                    {% url 'adminmanageinformations' as adminmanageinformations %}
+                    <a class="nav-link" href="{{ adminmanageinformations }}">
+                        <i class="fas fa-info me-1"></i>Aktualności</a>
+                </li>
+                <li class="nav-item me-5">
+                    {% url 'adminmanageresults' as adminmanageresults %}
+                    <a class="nav-link" href="{{ adminmanageresults }}">
+                        <i class="fas fa-graduation-cap me-1"></i>Oceny</a>
+                </li>
+                <li class="nav-item dropdown ms-5">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user me-1"></i>Profil
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="{% url 'adminprofile' %}">Edytuj profil</a></li>
+                    <li><a class="dropdown-item" href="{% url 'logoutpage' %}">Wyloguj się</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

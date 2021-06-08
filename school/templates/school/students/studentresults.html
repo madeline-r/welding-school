@@ -1,0 +1,84 @@
+{% extends 'students/studentbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 75%;
+        top: 200px;
+        left: 45%;
+        transform: translate(15%, 25px);
+        opacity: 85%;
+    }
+    .button{
+        width: 100px;
+        height: 25x;
+    }
+    .search{
+        width: 97%;
+        height: 40px;
+        border: none; 
+        border:solid 1px #000000;
+        border-radius: 5px;
+    }
+    .mtable{
+        font-size: 18px;
+    }
+</style>
+{% endblock custom_css %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-10 text-jusify-left ms-2 my-2">
+                                <h3 class="card-title">Oceny</h3>
+                            </div>
+                        </div>
+                        <input type="text" class="search ms-2 my-2" id="search" onkeyup="mySearch()" placeholder="Szukaj oceny" title="name">
+                    </div>
+                    <div class="table">
+                        <table class="table table-hover text-nowrap" id="myTable">
+                            <tr style="text-align:center">
+                                <th>Temat</th>
+                                <th>Ocena</th>
+                                <th>Opis</th>
+                            </tr>
+                            {% for row in studentresults %}
+                            <tr style="text-align:center">
+                                <td>{{ row.subjectid.subjectname }}</td>
+                                <td>{{ row.materialresult }}</td>
+                                <td>{{ row.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% block custom_js %}
+<script>
+    function mySearch() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+{% endblock custom_js %}
+{% endblock %}

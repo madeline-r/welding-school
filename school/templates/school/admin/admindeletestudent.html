@@ -1,0 +1,42 @@
+{% extends 'admin/adminbase.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .content {
+        width: 75%;
+        top: 200px;
+        left: 45%;
+        transform: translate(15%, 25px);
+        opacity: 85%;
+    }
+</style>
+{% endblock custom_css %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <center>
+                                <h3 class="card-title my-3 ms-2">Czy na pewno chcesz usunąć ucznia "{{ student.admin.first_name }} {{ student.admin.last_name }}"?</h3>
+                            </center>
+                        </div>
+                        <div class="my-4">
+                            <form action="{% url 'admindeletestudent' student.admin.id %}" method="POST">
+                                {% csrf_token %}
+                                <center>
+                                    <a href="{% url 'adminmanagestudents' %}" class="btn btn-outline-primary px-5 m-2">Anuluj</a>
+                                    <input type="submit" class="btn btn-outline-danger px-5 m-2" name="Usuń" value="Usuń"> 
+                                </center> 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block custom_js %}
+    <script>
+    </script>
+    {% endblock custom_js %}
+    {% endblock %}

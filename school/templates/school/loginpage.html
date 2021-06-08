@@ -1,0 +1,54 @@
+{% extends 'school/base.html' %}
+{% block content %}
+{% block custom_css %}
+<style>
+    .login-box {
+        width: 42%;
+        top: 50%;
+        left: 50%;
+        transform: translate(70%, 40px);
+        opacity: 85%;
+        word-break: break-all;
+    }
+</style>
+{% endblock custom_css %}
+<section>
+        <div class="login-box">
+                <div class="card">
+                    <div class="card-body login-card-body">
+                        <h5 class="display-6 text-center mt-3 mb-5"><span class="font-weight-bold">Logowanie</span></h5>
+                        <form action="/signin/" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="email" class="form-label mb-1">Email</label>
+                                <input type="email" class="form-control" placeholder="Adres email" name="email" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label mb-1">Hasło</label>
+                                <input type="password" class="form-control" placeholder="Hasło" name="password" id="password" required>
+                            </div>
+                            <div class="row errors-container">
+                                {% if messages %}
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == 'error' %}
+                                    <div class="alert alert-danger text-center" style="margin-top:10px">Niepoprawne dane logowania</div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-12 text-center mb-4">
+                                    <a class="text-secodnary" href="{% url 'password_reset' %}" >Nie pamiętasz hasła?</a>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <button type="submit" class="btn btn-outline-primary px-5 m-2">Zaloguj się</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+</section>
+{% endblock %}

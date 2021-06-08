@@ -1,0 +1,142 @@
+{% extends 'school/base.html' %}
+    {% block content %}
+        {% block custom_css %}
+        <style>
+            .container-fluid.welcome {
+                background: url("/static/images/welding.jpg") 40%;
+            }
+            .tig {
+                background-color: #030514;
+            }
+            .mig {
+                background-color: #030514;
+            }
+            .fas.fa-user{
+                color: white;
+            }
+        </style>
+        {% endblock custom_css %}
+    <section>
+        <div class="container-fluid welcome">
+            <div class="row justify-content-center align-items-center" style="height: 95vh;">
+                <div class="col text-center">
+                    <h1 class="display-1 text-capitalize"><span class="font-weight-bold text-light">SZKOŁA  SPAWALNICZA</span></h1>
+                    <h5 class="display-6 text-capitalize"><span class="font-weight-bold text-light">Kursy spawania metodami TIG i MIG/MAG</span></h5>
+                    <a href="#tig" class="btn btn-outline-light px-5 m-2">TIG</a>
+                    <a href="#mig" class="btn btn-outline-light px-4 m-4">MIG/MAG</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tig">
+        <div class="container-fluid">
+            <div class="row my-5">
+                <div class="col text-center">
+                    <h1 class="text-light display-5">
+                        <a id="tig">
+                            Metoda TIG
+                        </a>
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 text-center mb-5 ms-4">
+                    <img src="/static/images/tigwelding.jpg" width="400px" class="img-thumbnail">
+                </div>
+                <div class="col-lg-7 text-center" >
+                    <p class="text-light my-4 mt-2">
+
+                        Spawanie metodą TIG (Tungsten Inert Gas) - polega na wytwarzaniu łuku elektrycznego za pomocą nietopliwej elektrody wolframowej w osłonie gazu obojętnego. <br>
+                        <br>
+                        Metoda umożliwia uzyskanie spoiny niezwykle czystej i wysokiej jakości. W procesie nie powstaje żużel, co eliminuje ryzyko zanieczyszczenia spoiny jego wtrąceniami a gotowa spoina praktycznie nie wymaga żadnego czyszczenia. <br>
+                        <br>
+                        Metoda TIG jest najczęściej stosowana do spawania stali nierdzewnych i innych stali wysokostopowych oraz takich materiałów jak  aluminium, miedź, tytan, nikiel i ich stopów.
+                    </p>
+                </div>
+        </div> 
+    </section>
+
+    <section class="mig">
+        <div class="container-fluid">
+            <div class="row  my-5">
+                <div class="col text-center">
+                    <h1 class="text-light display-5">
+                        <a id="mig">
+                            Metoda MIG/MAG
+                        </a>
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-7 text-center" >
+                    <p class="text-light my-4 mt-2">
+                        Spawanie metodą MIG/MAG (Metal Inert/Active Gas) polega na spawaniu za pomocą łuku elektrycznego wytwarzanego pomiędzy elektrodą topliwą a spawanym materiałem.<br>
+                        <br>
+                        Spawanie MIG/MAG jest obecnie najszerzej stosowaną metodą spawania, obejmującą około 65% wszystkich przemysłowych łukowych metod spawania.<br>
+                        <br>
+                        Metoda MAG jest stosowana do łączenia stali konstrukcyjnych niestopowych, niskostopowych i wysokostopowych, natomiast metoda MIG do spawania aluminium, miedzi i innych metali nieżelaznych i ich stopów. 
+                    </p>
+                </div>
+            <div class="col-lg-4 text-center mb-5 ms-4">
+                <img src="/static/images/migwelding.jpg" width="400px" class="img-thumbnail">
+            </div>
+        </div> 
+    <section class="mig">
+        <div class="container-fluid">
+            <div class="row  my-5">
+                <div class="col text-center">
+                    <h1 class="text-light display-5">
+                        <a id="cennik">
+                            Cennik
+                        </a>
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 text-center" >
+                    <h5 class="text-light display-6">Kursy TIG</h5>
+                    <p class="text-light my-4 mt-4">
+                        Stal niestopowa "Czarna" - 3300 zł<br>
+                        <br>
+                        Stal stopowa "Nierdzewna" - 3500 zł<br>
+                        <br>
+                        Aluminium - 3500 zł
+                    </p>
+                </div>
+                <div class="col-lg-6 text-center ">
+                    <h5 class="text-light display-6">Kursy MIG/MAG</h5>
+                    <p class="text-light my-4 mt-4">
+                        Stal niestopowa "Czarna" - 3300 zł<br>
+                        <br>
+                        Stal stopowa "Nierdzewna" - 3500 zł<br>
+                    </p>
+                </div>
+        </div> 
+    </section>
+    <section class="mig">
+        <div class="container-fluid">
+            <div class="row  my-5">
+                <div class="col text-center">
+                    <h1 class="text-light display-5">
+                        <a id="kontakt">
+                            Kontakt
+                        </a>
+                    </h1>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-lg-6 text-center">
+                    <p class="text-end"><i class="fas fa-user fa-10x me-5"></i></p>
+                </div>
+                <div class="col-lg-6 text-align-left ">
+                    <p class="text-light my-4 mt-4">
+                        ul. Nazwa Ulicy<br>
+                        00-000 Miasto<br>
+                        Email: email@email.com<br>
+                        Numer: +48 123 456 789<br>
+                    </p>
+                </div>
+        </div> 
+    </section>
+    {% endblock %}
