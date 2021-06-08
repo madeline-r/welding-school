@@ -2,6 +2,9 @@
 
 >It's a web application built to support management and e-learning in a welding school. 
 
+<img src="https://github.com/madeline-r/welding-school/blob/main/static/images/home.jpg" alt="drawing" width="1000"/>
+
+
 ## Table of contents
 
 * [General info](#general-info)
@@ -32,11 +35,17 @@ This web application will support the company by providing opportunities for thr
 
 1. Administrator
 
-<img src="https://github.com/madeline-r/reviewer-app/blob/main/review.png" alt="drawing" width="1000"/>
+Administrator can manage staff, students, courses, subjects, grades and informations.  
 
 2. Staff
 
+Teachers can manage grades and attendance. They can also provide students with e-learning materials. 
+
 3. Students
+
+Students can check their grades, attendance and learn from materials provided by teachers 
+
+To see some interfaces from the application before downloading it, check https://github.com/madeline-r/welding-school/tree/main/static/images
 
 
 
