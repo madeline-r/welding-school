@@ -21,7 +21,9 @@ This project is created to support a welding school. Applying it in everyday lif
 * Python 3.9.0
 * Django 3.1.4
 * Sqlite 3.31.1
+* JavaScript
 * Bootstrap v5.0.0
+
 
 ## Setup
 
@@ -35,15 +37,15 @@ This web application will support the company by providing opportunities for thr
 
 1. Administrator
 
-Administrator can manage staff, students, courses, subjects, grades and informations.  
+  Administrator can manage staff, students, courses, subjects, grades and informations.  
 
 2. Staff
 
-Teachers can manage grades and attendance. They can also provide students with e-learning materials. 
+  Teachers can manage grades and attendance. They can also provide students with e-learning materials. 
 
 3. Students
 
-Students can check their grades, attendance and learn from materials provided by teachers 
+  Students can check their grades, attendance and learn from materials provided by teachers 
 
 To see some interfaces from the application before downloading it, check https://github.com/madeline-r/welding-school/tree/main/static/images
 
